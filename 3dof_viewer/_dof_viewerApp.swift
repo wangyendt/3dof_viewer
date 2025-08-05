@@ -11,7 +11,10 @@ import SwiftUI
 struct _dof_viewerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                ContentView()
+            }
+            .navigationViewStyle(StackNavigationViewStyle()) // 强制在iPad上使用单栏模式
         }
     }
 }

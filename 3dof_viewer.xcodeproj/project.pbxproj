@@ -413,6 +413,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "wayne.MicroHandGestureCollectorIWatch.3DoFViewer.-dof-viewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "3dof_viewer/3dof_viewer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -441,6 +442,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "wayne.MicroHandGestureCollectorIWatch.3DoFViewer.-dof-viewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "3dof_viewer/3dof_viewer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
