@@ -50,7 +50,7 @@ struct AppleMotionView: View {
                     data: viewModel.appleAttitudeHistory,
                     displayFormat: viewModel.displayFormat
                 )
-                .frame(height: 200)
+            .frame(height: 350)
                 
                 // 3D立方体
                 CubeView(

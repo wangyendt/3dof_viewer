@@ -27,6 +27,12 @@ struct ChartView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
+                    // 显式图例（放在曲线图上方，避免覆盖）
+                    HStack(spacing: 12) {
+                        LegendItem(color: .red, label: "Roll")
+                        LegendItem(color: .green, label: "Pitch")
+                        LegendItem(color: .blue, label: "Yaw")
+                    }
                     EulerChart(data: data)
                 }
             } else {
@@ -62,6 +68,10 @@ struct EulerChart: View {
         }
     }
     
+    // 横轴范围与刻度
+    private var xMax: Double { max(chartData.last?.time ?? 0, 10) }
+    private var xDomain: ClosedRange<Double> { max(xMax - 10, 0)...xMax }
+    
     var body: some View {
         Chart(chartData, id: \.time) { point in
             LineMark(
@@ -91,36 +101,44 @@ struct EulerChart: View {
             .symbol(.triangle)
             .symbolSize(data.count > 100 ? 0 : 3)
         }
+        // 横轴使用滚动窗口：最近10秒（早期不足10秒时从0开始）
+        .chartXScale(domain: xDomain)
         .chartXAxis {
-            AxisMarks(position: .bottom) { value in
-                AxisGridLine()
+            AxisMarks(position: .bottom, values: .stride(by: 2)) { value in
+                AxisGridLine().foregroundStyle(Color.gray.opacity(0.3))
                 AxisTick()
                 AxisValueLabel() {
                     if let time = value.as(Double.self) {
                         Text(String(format: "%.1fs", time))
                             .font(.caption2)
+                            .foregroundStyle(Color.black)
                     }
                 }
             }
         }
         .chartYAxis {
             AxisMarks(position: .leading) { value in
-                AxisGridLine()
+                AxisGridLine().foregroundStyle(Color.gray.opacity(0.3))
                 AxisTick()
                 AxisValueLabel() {
                     if let angle = value.as(Double.self) {
                         Text(String(format: "%.0f°", angle))
                             .font(.caption2)
+                            .foregroundStyle(Color.black)
                     }
                 }
             }
         }
-        .chartLegend(position: .topTrailing, alignment: .topTrailing) {
-            HStack(spacing: 8) {
-                LegendItem(color: .red, label: "Roll")
-                LegendItem(color: .green, label: "Pitch")
-                LegendItem(color: .blue, label: "Yaw")
-            }
+        // 坐标轴标题（显式显示）
+        .chartXAxisLabel(position: .bottom, alignment: .center) {
+            Text("Time (s)").font(.caption).foregroundStyle(Color.black)
+        }
+        .chartYAxisLabel(position: .leading, alignment: .center) {
+            Text("Euler Angle (deg)")
+                .font(.caption)
+                .foregroundStyle(Color.black)
+                .rotationEffect(.degrees(180))
+                .fixedSize()
         }
         .background(Color.white)
         .cornerRadius(8)
